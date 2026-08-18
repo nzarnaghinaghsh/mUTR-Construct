@@ -2,7 +2,7 @@
 A Conditional Structure-Aware Generative Transformer for Multi-Objective Design of m1Ψ-Modified RNA 5’ UTRs
 
 
-# generate_compare_control_real_struct_pareto_smart5utr_v3.py
+File generate_compare_control_real_struct_pareto_smart5utr_v3.py:
 Generate 500 sequences per scenario with a trained hybrid RL+GC+MFE+structure generator,
 run a Smart5UTR-only baseline for the same scenarios, and aggregate comparison statistics.
 
