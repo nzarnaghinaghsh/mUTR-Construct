@@ -1,6 +1,56 @@
 # mUTR-Construct
 A Conditional Structure-Aware Generative Transformer for Multi-Objective Design of m1Ψ-Modified RNA 5’ UTRs
 
+File train_hybrid_struct_generator_besthp.py:
+
+Training-only script for the hybrid conditional generator with four conditioning
+features:
+
+    RL + GC + MFE + dot-bracket secondary structure
+
+This is the mode-free/comment-free replacement for the old "comment/uncomment
+main section" workflow. It retrains one final model using the best hyper-parameters:
+
+    batch_size = 32
+    dropout    = 0.15
+    ff_dim     = 256
+    d_model    = 64
+    epochs     = 8
+    layers     = 3
+    lr         = 1e-4
+
+It also supports optional train/validation split so you can confirm the loss,
+but it always saves a final full-data model by default.
+
+Expected CSV columns:
+    Required:
+        sequence  OR  utr
+
+    Optional:
+        rl / RL / mrl / MRL / target_rl
+        gc / GC / target_gc
+        mfe / MFE / target_mfe
+        structure / target_structure
+
+If MFE or structure are missing, they are computed using ViennaRNA. If you pass
+--modification_json, the script loads that JSON before folding.
+
+Example:
+    python train_hybrid_struct_generator_besthp.py \
+      --train_csv benchmark_sequences.csv \
+      --output_dir hybrid_struct_besthp_training \
+      --out_model hybrid_struct_besthp_final.pt \
+      --modification_json rna_mod_n1methylpseudouridine_parameters.json
+
+Optional validation split:
+    python train_hybrid_struct_generator_besthp.py \
+      --train_csv benchmark_sequences.csv \
+      --output_dir hybrid_struct_besthp_training \
+      --val_fraction 0.1 \
+      --modification_json rna_mod_n1methylpseudouridine_parameters.json
+
+
+
 
 File generate_compare_control_real_struct_pareto_smart5utr_v3.py:
 
@@ -31,3 +81,7 @@ Typical usage:
      --mode aggregate \
      --scenario_set full \
      --out_dir scenario_outputs_struct_besthp
+
+
+
+
